@@ -234,4 +234,51 @@ document.addEventListener('DOMContentLoaded', () => {
     'big'
   ).renderPatrial();
 
+  // Forms
+
+  const forms = document.querySelectorAll('form');
+
+  const message = {
+    loading: 'Загрузка',
+    success: 'Спасибо! Скоро мы с вами свяжемся',
+    failure: 'Что-то пошло не так...'
+  };
+
+  forms.forEach(item => {
+    postData(item);
+  });
+
+  function postData(form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault(); // Отмена стандартного поведения браузера с методом preventDefault()
+
+      // Создание сообщения для пользователя 
+      const statusMsg = document.createElement('div');
+      statusMsg.classList.add('status');
+      statusMsg.textContent = message.loading;
+      form.append(statusMsg);
+
+      const request = new XMLHttpRequest();
+      request.open('POST', './server.php');
+
+      // request.setRequestHeader('Content-Type', 'multipart/form-data');
+      const formData = new FormData(form);
+
+      request.send(formData);
+
+      request.addEventListener('load', () => {
+        if (request.status === 200) {
+          console.log(request.response);
+          statusMsg.textContent = message.success;
+          form.reset();
+          setTimeout(() => {
+            statusMsg.remove();
+          }, 2000);
+        } else {
+          statusMsg.textContent = message.failure;
+        }
+      });
+
+    });
+  }
 });

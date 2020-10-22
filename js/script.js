@@ -262,9 +262,17 @@ document.addEventListener('DOMContentLoaded', () => {
       request.open('POST', './server.php');
 
       // request.setRequestHeader('Content-Type', 'multipart/form-data');
+      request.setRequestHeader('Content-Type', 'application/json');
       const formData = new FormData(form);
 
-      request.send(formData);
+      const object = {};
+      formData.forEach(function(value, key) {
+        object[key] = value;
+      });
+
+      const json = JSON.stringify(object);
+
+      request.send(json);
 
       request.addEventListener('load', () => {
         if (request.status === 200) {

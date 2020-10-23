@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const forms = document.querySelectorAll('form');
 
   const message = {
-    loading: 'Загрузка',
+    loading: 'img/form/spinner.svg',
     success: 'Спасибо! Скоро мы с вами свяжемся',
     failure: 'Что-то пошло не так...'
   };
@@ -249,13 +249,17 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault(); // Отмена стандартного поведения браузера с методом preventDefault()
 
       // Создание сообщения для пользователя 
-      const statusMsg = document.createElement('div');
-      statusMsg.classList.add('status');
-      statusMsg.textContent = message.loading;
-      form.append(statusMsg);
+      const statusMsg = document.createElement('img');
+      statusMsg.src = message.loading;
+      statusMsg.style.cssText = `
+        display: block;
+        margin: 0 auto;
+      `;
+      
+      form.insertAdjacentElement('afterend', statusMsg);
 
       const request = new XMLHttpRequest();
-      request.open('POST', './server.php');
+      request.open('POST', 'server.php');
 
       // request.setRequestHeader('Content-Type', 'multipart/form-data');
       request.setRequestHeader('Content-Type', 'application/json');

@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 1. Появление мод. окна через 10-15 сек.
 
-  // const modalTimerId = setTimeout(openModal, 5000);
+  const modalTimerId = setTimeout(openModal, 5000);
 
   // 2. Появление мод. окна, если пользователь долистал до конца страницы
 
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // window.addEventListener('scroll', showModalByScroll);
+  window.addEventListener('scroll', showModalByScroll);
 
   // Menu cards
 

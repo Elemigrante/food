@@ -100,8 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Modal Window
 
   const modalTrigger = document.querySelectorAll('[data-modal]'),
-    modal = document.querySelector('.modal'),
-    modalCloseBtn = document.querySelector('[data-close]');
+    modal = document.querySelector('.modal');
 
   //  Функция открытия мод. окна
   function openModal() {
@@ -124,12 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', openModal);
   });
 
-  //  закрытие модального окна при клике на кнопку "крестик"
-  modalCloseBtn.addEventListener('click', closeModal);
-
   //  закрытие модального окна при клике на подложку
   modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
+    if (e.target === modal || e.target.getAttribute('data-close') == '') {
       closeModal();
     }
   });
@@ -145,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 1. Появление мод. окна через 10-15 сек.
 
-  const modalTimerId = setTimeout(openModal, 5000);
+  const modalTimerId = setTimeout(openModal, 50000);
 
   // 2. Появление мод. окна, если пользователь долистал до конца страницы
 
@@ -266,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const formData = new FormData(form);
 
       const object = {};
-      formData.forEach(function(value, key) {
+      formData.forEach(function (value, key) {
         object[key] = value;
       });
 
@@ -277,16 +273,44 @@ document.addEventListener('DOMContentLoaded', () => {
       request.addEventListener('load', () => {
         if (request.status === 200) {
           console.log(request.response);
+          showThanksModal(message.success);
           statusMsg.textContent = message.success;
           form.reset();
           setTimeout(() => {
             statusMsg.remove();
           }, 2000);
         } else {
-          statusMsg.textContent = message.failure;
+          showThanksModal(message.failure);
         }
       });
 
     });
+  }
+
+  // Появление нового модального окна после заполнения формы
+  function showThanksModal(message) {
+    const prevModalDialog = document.querySelector('.modal__dialog');
+    // Скрытие предыдущего модального окна
+    prevModalDialog.classList.add('hide');
+    // Открытие другого
+    openModal();
+    // Создание нового элемента
+    const thanksModal = document.createElement('div');
+    thanksModal.classList.add('modal__dialog');
+    thanksModal.innerHTML = `
+      <div class="modal__content">
+        <div class="modal__close" data-close>×</div>
+        <div class="modal__title">${message}</div>
+      </div>
+    `;
+
+    // Помещение элемента(блока) на страницу
+    document.querySelector('.modal').append(thanksModal);
+    setTimeout(() => {
+      thanksModal.remove();
+      prevModalDialog.classList.add('show');
+      prevModalDialog.classList.remove('hide');
+      closeModal();
+    }, 4000);
   }
 });

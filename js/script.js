@@ -308,4 +308,58 @@ document.addEventListener('DOMContentLoaded', () => {
       closeModal();
     }, 4000);
   }
+
+  // Slider
+
+  const slides = document.querySelectorAll('.offer__slide'),
+    prev = document.querySelector('.offer__slider-prev'),
+    next = document.querySelector('.offer__slider-next'),
+    total = document.querySelector('#total'),
+    current = document.querySelector('#current');
+
+  let slideIndex = 1;
+
+  showSlides(slideIndex);
+
+  // Количество слайдов
+  if (slides.length < 10) {
+    total.textContent = `0${slides.length}`;
+  } else {
+    total.textContent = slides.length;
+  }
+
+  // Показ слайдов
+  function showSlides(i) {
+
+    if (i > slides.length) {
+      slideIndex = 1;
+    }
+
+    if (i < 1) {
+      slideIndex = slides.length;
+    }
+
+    slides.forEach(item => item.style.display = 'none');
+    slides[slideIndex - 1].style.display = 'block';
+
+    // Текущий слайд
+    if (slides.length < 10) {
+      current.textContent = `0${slideIndex}`;
+    } else {
+      current.textContent = slideIndex;
+    }
+  }
+
+  // Перемещение по слайдам
+  function plusSlides(i) {
+    showSlides(slideIndex += i);
+  }
+
+  prev.addEventListener('click', () => {
+    plusSlides(-1);
+  });
+
+  next.addEventListener('click', () => {
+    plusSlides(1);
+  });
 });

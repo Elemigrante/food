@@ -207,10 +207,10 @@ document.addEventListener('DOMContentLoaded', () => {
     return await res.json();
   };
 
-  // Рендер карточек меню из db.json 
-  getResource('http://localhost:3000/menu')
+  // Получение карточек с axios
+  axios.get('http://localhost:3000/menu')
     .then(data => {
-      data.forEach(({
+      data.data.forEach(({
         img,
         altimg,
         title,
